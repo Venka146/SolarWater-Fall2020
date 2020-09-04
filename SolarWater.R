@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 library(shinycssloaders)
 library(shinyjs)
 library(shinyWidgets)
 # hello
-
+#hi bro
 ui <- fluidPage(
   
   setBackgroundImage(src = "poop.jpeg"),
@@ -48,4 +47,3 @@ ui <- fluidPage(
 Server <- function(input, output) {}
 
 shinyApp(ui=ui, server = server)
->>>>>>> d5450a880ba67d325e1bfa9c528954890f4e0781
