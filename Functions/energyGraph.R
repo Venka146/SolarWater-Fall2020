@@ -1,11 +1,11 @@
 library(tidyverse)
 
-energyGraph <- function(data, temp, time){
-  eGraph <- ggplot(data = data, aes(x = time, y = energy, color = "blue") +
-    geom_line(size = 1.25) +
-      labs(title = "Energy Reserves") +
-      xlab("Time (hours)") +
-      ylab("Energy (V)"))
+energyGraph <- function(data, temp){
+  eGraph <- ggplot(data = data) +
+    geom_line(mapping = aes(x = timeVals, y = energyVals), color = "blue", size = 1.25) +
+    labs(title = "Energy Reserves", subtitle = paste("at a temperature of ", temp, "°C"),
+      x = "Time (hours)",
+      y = "Energy (V)")
   return (eGraph)
 }
 

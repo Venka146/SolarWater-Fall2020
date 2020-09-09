@@ -1,0 +1,32 @@
+---
+title: "energyGraph"
+author: "Sakthi & Shri"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+source("./energyGraph.R")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Solar Panel Energy Systems Intro
+
+This is an R markdown document for the Energy Graph associated with our Solar Panel Energy System. The graph takes in temperature of the environment, length of simulation, and solar panel energy system data. 
+
+```{r data, echo = FALSE}
+  sim_temp <- 25
+  sim_length <- 5
+  hours <- c(0:sim_length)
+  energy <- c(4, 5, 3, 2, 1, 0)
+  data <- data.frame(timeVals = hours,
+                     energyVals = energy)
+```
+
+## Graph
+
+The graph below illustrates the energy in the system throughout the specified simulation time period. 
+
+```{r graph, echo = FALSE}
+energyGraph(data, sim_temp)
+```
