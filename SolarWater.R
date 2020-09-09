@@ -22,7 +22,7 @@ ui <- fluidPage(
     tags$h2(tags$strong("Enter Initial Conditions"), align = 'center'),
     #horizontal line 
     tags$hr(),
-    
+    #inputs for user customization
     numericInput(inputId = "scNum", label = "Enter number of solar cells: ", value = 1, min = 0, step = 1),
     numericInput(inputId = "scPower", label = "Enter solar cell voltage (V): ", value = 1, min = 0),
     
@@ -63,9 +63,10 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  #### Initial Reactants Calculation ####
-  sim_temp <- eventReactive(input$start,input$temp)
-  sim_length <- eventReactive(input$start, input$time)
+  #graph set up 
+  sim_temp <- eventReactive(input$start, {as.numeric(input$temp)})
+  sim_length <- eventReactive(input$start, {as.numeric(input$time)})
+  
   hours <- c(1, 2, 3, 4, 5)
   energy <- c(4, 5, 3, 2, 1)
   data <-as.data.frame(cbind(hours, energy))
