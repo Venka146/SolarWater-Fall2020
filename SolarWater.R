@@ -2,10 +2,10 @@ library(shinycssloaders)
 library(shinyjs)
 library(shinyWidgets)
 source("./Functions/energyGraph.R")
+
 ui <- fluidPage(
   
-# setBackgroundImage(src = "xp.jpg"),
-  setBackgroundColor("blue"),
+  setBackgroundImage(src = "xp.jpg"),
   
   sidebarLayout(sidebarPanel(
     numericInput(inputId = "scNum", label = "Enter number of solar cells: ", value = 0, min = 0, step = 1),
@@ -21,6 +21,6 @@ ui <- fluidPage(
   )
 )
 
-server <- function(input, output) {setBackgroundImage(src = "poop.jpeg")}
+server <- function(input, output) {}
 
 shinyApp(ui=ui, server = server)
