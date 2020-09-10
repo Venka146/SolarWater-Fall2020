@@ -3,6 +3,7 @@ library(shinycssloaders)
 library(shinyjs)
 library(shinyWidgets)
 source("./Functions/energyGraph.R")
+source("./Functions/genEnergyVals.R")
 
 ui <- fluidPage(
   #theme = shinytheme("yeti"),
@@ -65,14 +66,14 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   #graph set up 
   sim_temp <- eventReactive(input$start, {as.numeric(input$temp)})
-  sim_length <- eventReactive(input$start, {as.numeric(input$time)})
+  sim_num <- eventReactive(input$start, {as.numeric(input$scNum)})
+  sim_power <- eventReactive(input$start, {as.numeric(input$scPower)})
+  sim_time <- eventReactive(input$start, {as.numeric(input$time)})
   
-  hours <- c(1, 2, 3, 4, 5)
-  energy <- c(4, 5, 3, 2, 1)
-  data <-as.data.frame(cbind(hours, energy))
+  data <- gen_energy_vals(sim_num, sim_power, sim_time)
   
   output$dispPlot <- renderPlot(
-    energyGraph(data, sim_temp, sim_length)
+    energyGraph(data, sim_temp)
   )
 }
 
