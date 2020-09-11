@@ -65,12 +65,12 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   #graph set up 
-  sim_temp <- eventReactive(input$start, {as.numeric(input$temp)})
-  sim_num <- eventReactive(input$start, {as.numeric(input$scNum)})
-  sim_power <- eventReactive(input$start, {as.numeric(input$scPower)})
-  sim_time <- eventReactive(input$start, {as.numeric(input$time)})
+  sim_temp <- observeEvent(input$start, {as.numeric(input$temp)})
+  sim_num <- observeEvent(input$start, {as.numeric(input$scNum)})
+  sim_power <- observeEvent(input$start, {as.numeric(input$scPower)})
+  sim_time <- observeEvent(input$start, {as.numeric(input$time)})
   
-  data <- gen_energy_vals(sim_num, sim_power, sim_time)
+  data <- observeEvent(input$start, gen_energy_vals(sim_num, sim_power, sim_time))
   
   output$dispPlot <- renderPlot(
     energyGraph(data, sim_temp)
