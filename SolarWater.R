@@ -6,6 +6,7 @@ source("./Functions/energyGraph.R")
 source("./Functions/genEnergyVals.R")
 
 ui <- fluidPage(
+  # Background color/image
   #theme = shinytheme("yeti"),
   setBackgroundImage(src = "xp.jpg"),
   setBackgroundColor(
@@ -13,6 +14,7 @@ ui <- fluidPage(
      gradient = "linear",
     direction = "top",
     shinydashboard = FALSE),
+  # Title of webpage
   wellPanel(h1(
     strong("Solar Energy Simulation Module"),
     align = 'center'
@@ -24,15 +26,15 @@ ui <- fluidPage(
     #horizontal line 
     tags$hr(),
     #inputs for user customization
-    numericInput(inputId = "scNum", label = "Enter number of solar cells: ", value = 1, min = 0, step = 1),
-    numericInput(inputId = "scPower", label = "Enter solar cell voltage (V): ", value = 1, min = 0),
+    numericInput(inputId = "scNum", label = "Enter number of solar cells: ", value = 4, min = 0, step = 1),
+    numericInput(inputId = "scPower", label = "Enter solar cell voltage (V): ", value = 5, min = 0),
     
     tags$p(""),
     numericInput(inputId = "temp", label = "Temperature (°C): ", value = 25, step = 1, min = 0, max = 50),
     numericInput(inputId = "filterEnergy", label = "Filter Energy Consumption: ", value = 5, min = 0, max = 100),
-    numericInput(inputId = "time", label = "Enter simulation length (hr): ", value = 3, min = 0, max = 24, step = 1),
+    numericInput(inputId = "time", label = "Enter simulation length (hr): ", value = 5, min = 0, max = 24, step = 1),
   
-    # "go" button
+    # "start" button
     tags$div(
       actionBttn(inputId = "start",
                  label = "Generate Energy Simulation",
@@ -50,30 +52,33 @@ ui <- fluidPage(
       condition = "input.start != 0",
       #Title of main panel
       wellPanel(
-        tags$h2(strong("Infographic Display"), align = 'center'
+        tags$h2(strong("Simulation Graph"), align = 'center'
                 ),
+      wellPanel(
+          # addition of concentration or other plot
+          plotOutput("dispPlot") %>% withSpinner(color = "#000000")
+        ),
+      # Slider to interact with graphs
     sliderInput(inputId = "timePoint", label = "Select graph time point", value = 4, min = 0, max = 24)
-      ),
-    wellPanel(
-      # addition of concentration or other plot
-      plotOutput("dispPlot") %>% withSpinner(color = "#000000")
-    )
+      )
+   
     )
   )
   )
 )
 
 server <- function(input, output, session) {
-  #graph set up 
-  sim_temp <- observeEvent(input$start, {as.numeric(input$temp)})
-  sim_num <- observeEvent(input$start, {as.numeric(input$scNum)})
-  sim_power <- observeEvent(input$start, {as.numeric(input$scPower)})
-  sim_time <- observeEvent(input$start, {as.numeric(input$time)})
+  #graph prep work 
+  sim_temp <- eventReactive(input$start, input$temp)
+  sim_num <- eventReactive(input$start, input$scNum)
+  sim_power <- eventReactive(input$start, input$scPower)
+  sim_time <- eventReactive(input$start, input$time)
   
-  data <- observeEvent(input$start, gen_energy_vals(sim_num, sim_power, sim_time))
+  data <- eventReactive(input$start, gen_energy_vals(sim_num(), sim_power(), sim_time()))
   
+  # Displaying the graph
   output$dispPlot <- renderPlot(
-    energyGraph(data, sim_temp)
+    energyGraph(data(), sim_temp())
   )
 }
 

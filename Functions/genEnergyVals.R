@@ -1,17 +1,20 @@
 gen_energy_vals <- function(scNum, scPower, sim_length) {
   #energy_gen = as.double(scNum) * as.double(scPower)
+  # Calculate how much energy is produced
   energy_gen <- scNum * scPower 
+  #Create a vector with times from 0:time
   time = sim_length
   timeVals <- c(0:time) 
   energyVals <- c()
+  # Amount of energy consumed per hour
   energy_cons = 10
-  for(i in (timeVals + 1)) {
   
+  # creating a vector to store energy reserves per hour
+  for(i in (timeVals + 1)) {
     output_energy = energy_gen * (rnorm(1, 0, 1)/5+.9) - energy_cons
     energyVals[i] <- output_energy
-  
   }
-  
+  # Combining the two vectors to form a dataframe
   data = data.frame(timeVals, energyVals)
-  return(data)
+  return (data)
 }

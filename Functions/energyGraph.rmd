@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include = FALSE}
 source("./energyGraph.R")
+source("./genEnergyVals.R")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -17,10 +18,12 @@ This is an R markdown document for the Energy Graph associated with our Solar Pa
 ```{r data, echo = FALSE}
   sim_temp <- 25
   sim_length <- 5
-  hours <- c(0:sim_length)
-  energy <- c(4, 5, 3, 2, 1, 0)
-  data <- data.frame(timeVals = hours,
-                     energyVals = energy)
+  scNum <- 5
+  scPow <- 6
+  
+  data <- gen_energy_vals(scNum, scPow, sim_length)
+    
+  
 ```
 
 ## Graph
