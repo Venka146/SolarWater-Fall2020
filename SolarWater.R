@@ -9,11 +9,11 @@ ui <- fluidPage(
   # Background color/image
   #theme = shinytheme("yeti"),
   setBackgroundImage(src = "xp.jpg"),
-  setBackgroundColor(
-    color = c("orange", "red"),
-     gradient = "linear",
-    direction = "top",
-    shinydashboard = FALSE),
+  #setBackgroundColor(
+   # color = c("orange", "red"),
+   #  gradient = "linear",
+    #direction = "top",
+    #shinydashboard = FALSE),
   # Title of webpage
   wellPanel(h1(
     strong("Solar Energy Simulation Module"),
