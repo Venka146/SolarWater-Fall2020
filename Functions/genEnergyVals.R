@@ -13,6 +13,9 @@ gen_energy_vals <- function(scNum, scPower, sim_length) {
   for(i in (timeVals + 1)) {
     output_energy = energy_gen * (rnorm(1, 0, 1)/5+.9) - energy_cons
     if(i < 1) {
+      energyVals[0] <- 0
+    }
+    else if (i < 2) {
       energyVals[i] <- output_energy
     }
     else {
