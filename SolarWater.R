@@ -7,7 +7,6 @@ source("./Functions/genEnergyVals.R")
 
 ui <- fluidPage(
   # Background color/image
-  #theme = shinytheme("yeti"),
   setBackgroundImage(src = "xp.jpg"),
   #setBackgroundColor(
    # color = c("orange", "red"),
