@@ -21,23 +21,27 @@ ui <- fluidPage(
   )),
   
   sidebarLayout(sidebarPanel(
-    #title of sidebar
-    tags$h2(tags$strong("Enter Initial Conditions"), align = 'center'),
-    #horizontal line 
-    tags$hr(),
-    #inputs for user customization
-    numericInput(inputId = "scNum", label = "Enter number of solar cells: ", value = 4, min = 0, step = 1),
-    numericInput(inputId = "scPower", label = "Enter solar cell voltage (V): ", value = 5, min = 0),
     
-    tags$p(""),
-    numericInput(inputId = "temp", label = "Temperature (°C): ", value = 25, step = 1, min = 0, max = 50),
-    numericInput(inputId = "filterEnergy", label = "Filter Energy Consumption: ", value = 5, min = 0, max = 100),
-    numericInput(inputId = "time", label = "Enter simulation length (hr): ", value = 5, min = 0, max = 24, step = 1),
-  
+    tags$hr(),
+    #energy related inputs for user customization
+    tags$h3(tags$strong("Energy Specifications")),
+    wellPanel(
+      numericInput(inputId = "scNum", label = "Enter number of solar cells: ", value = 4, min = 0, step = 1),
+      numericInput(inputId = "scPower", label = "Enter solar cell voltage (V): ", value = 5, min = 0),
+      numericInput(inputId = "temp", label = "Temperature (°C): ", value = 25, step = 1, min = 0, max = 50),
+      numericInput(inputId = "filterEnergy", label = "Filter Energy Consumption (W): ", value = 5, min = 0, max = 100),
+      numericInput(inputId = "time", label = "Enter simulation length (hr): ", value = 5, min = 0, max = 24, step = 1),
+    ),
+    #water related inputs for user customization
+    tags$h3(tags$strong("Water Specifications")),
+    wellPanel(
+      numericInput(inputId = "volume", label = "Enter input volume (L): ", value = 10, min = 0),
+      numericInput(inputId = "tank", label = "Enter tank size (L): ", value = 100, min = 0),
+    ),
     # "start" button
     tags$div(
       actionBttn(inputId = "start",
-                 label = "Generate Energy Simulation",
+                 label = "Generate Simulation",
                  style = "jelly",
                  color = "primary",
                  size = "md"
@@ -58,8 +62,14 @@ ui <- fluidPage(
           # addition of concentration or other plot
           plotOutput("dispPlot") %>% withSpinner(color = "#000000")
         ),
+      #Drop down menu to select graphs
+      selectInput(inputId = "graphSelect", label = "Select graph to view: ", 
+                  c("Energy Reserves" = "eRes",
+                    "Purified Water" = "wPure"),
+                  width = '17%',
+                  selected = "eRes"),
       # Slider to interact with graphs
-    sliderInput(inputId = "timePoint", label = "Select graph time point", value = 4, min = 0, max = 24)
+      sliderInput(inputId = "timePoint", label = "Select graph time point", value = 4, min = 0, max = 24)
       )
    
     )

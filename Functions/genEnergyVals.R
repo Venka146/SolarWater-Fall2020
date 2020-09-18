@@ -12,7 +12,12 @@ gen_energy_vals <- function(scNum, scPower, sim_length) {
   # creating a vector to store energy reserves per hour
   for(i in (timeVals + 1)) {
     output_energy = energy_gen * (rnorm(1, 0, 1)/5+.9) - energy_cons
-    energyVals[i] <- output_energy
+    if(i < 1) {
+      energyVals[i] <- output_energy
+    }
+    else {
+      energyVals[i] <- (energyVals[i-1] + output_energy)
+    }
   }
   # Combining the two vectors to form a dataframe
   data = data.frame(timeVals, energyVals)
