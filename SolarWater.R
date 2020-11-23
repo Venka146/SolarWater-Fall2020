@@ -28,14 +28,12 @@ ui <- fluidPage(
       numericInput(inputId = "scNum", label = "Enter number of solar cells: ", value = 4, min = 0, step = 1),
       numericInput(inputId = "scPower", label = "Enter solar cell voltage (V): ", value = 5, min = 0),
       numericInput(inputId = "temp", label = "Temperature (°C): ", value = 25, step = 1, min = 0, max = 50),
-      numericInput(inputId = "filterEnergy", label = "Filter Energy Consumption (W): ", value = 5, min = 0, max = 100),
       numericInput(inputId = "time", label = "Enter simulation length (hr): ", value = 5, min = 0, max = 24, step = 1),
     ),
     #water related inputs for user customization
     tags$h3(tags$strong("Water Specifications")),
     wellPanel(
       numericInput(inputId = "volume", label = "Enter input volume (L): ", value = 10, min = 0),
-      numericInput(inputId = "tank", label = "Enter tank size (L): ", value = 100, min = 0),
     ),
     # "start" button
     tags$div(
@@ -64,7 +62,7 @@ ui <- fluidPage(
       #Drop down menu to select graphs
       selectInput(inputId = "graphSelect", label = "Select graph to view: ", 
                   c("Energy Reserves" = "eRes",
-                    "Purified Water" = "wPure"),
+                    "Water Production" = "wProd"),
                   width = '17%',
                   selected = "eRes"),
       # Slider to interact with graphs
@@ -82,12 +80,17 @@ server <- function(input, output, session) {
   sim_num <- eventReactive(input$start, input$scNum)
   sim_power <- eventReactive(input$start, input$scPower)
   sim_time <- eventReactive(input$start, input$time)
+  sim_volume <- eventReactive(input$start, input$volume)
   
-  data <- eventReactive(input$start, gen_energy_vals(sim_num(), sim_power(), sim_time()))
+  edata <- eventReactive(input$start, gen_energy_vals(sim_num(), sim_power(), 
+                                                     sim_time(), sim_volume()))
+  
+  wdata <- eventReactive(input$start, gen_energy_vals(sim_num(), sim_power(), 
+                                                      sim_time(), sim_volume()))
   
   # Displaying the graph
   output$dispPlot <- renderPlot(
-    energyGraph(data(), sim_temp())
+    energyGraph(edata(), sim_temp())
   )
 }
 
