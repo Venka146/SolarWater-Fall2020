@@ -68,7 +68,6 @@ ui <- fluidPage(
       # Slider to interact with graphs
       sliderInput(inputId = "timePoint", label = "Select graph time point", value = 4, min = 0, max = 24)
       )
-   
     )
   )
   )
@@ -88,10 +87,21 @@ server <- function(input, output, session) {
   wdata <- eventReactive(input$start, gen_energy_vals(sim_num(), sim_power(), 
                                                       sim_time(), sim_volume()))
   
+  
   # Displaying the graph
-  output$dispPlot <- renderPlot(
-    energyGraph(edata(), sim_temp())
-  )
+  graphType = reactive({
+    
+    if (graphType() == "eRes") {
+      graphType <- energyGraph(edata(), sim_temp())
+    } else {
+      graphType <- waterProdGraph(wdata())
+    }
+  })
+  
+  output$dispPlot <- (
+    renderPlot(graphType())
+                       )
+  
 }
 
 shinyApp(ui=ui, server = server)
